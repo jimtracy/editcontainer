@@ -1,0 +1,24 @@
+version: "3"
+
+services:
+  webserver:
+    image: php:7.1.20-apache
+    container_name: 'myanti_web'
+    restart: 'always'
+    ports:
+      - "80:80"
+      - "443:443"
+    #links: 
+    #  - mysql
+    volumes: 
+      - ./html:/var/www/html
+      #- ${PHP_INI-./config/php/php.ini}:/usr/local/etc/php/php.ini
+      #- ${VHOSTS_DIR-./config/vhosts}:/etc/apache2/sites-enabled
+      - ./apache_logs:/var/log/apache2
+  edit:
+    build: ./edit
+    container_name: 'myanti_edit'
+    depends_on: 
+      - webserver
+    volumes: 
+      - ./html:/var/www/html
